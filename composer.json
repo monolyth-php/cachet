@@ -11,5 +11,10 @@
     ],
     "require": {
         "monolyth/cliff": "^0.2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Monolyth\\Cachet": "./src"
+        }
     }
 }
