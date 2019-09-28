@@ -22,7 +22,7 @@ abstract class Twig
         if (class_exists(Environment::class)) {
             $env = Environment::instance();
         }
-        $twig->addFunction(new TwigFunction('version', function ($file) use ($env) {
+        $twig->addFunction(new TwigFunction('cachet', function ($file) use ($env) {
             if (!isset($env) || !$env->prod) {
                 return $file;
             }
