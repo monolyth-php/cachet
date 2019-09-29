@@ -30,7 +30,9 @@ abstract class Twig
             if (!isset($versions)) {
                 $versions = json_decode(file_get_contents($versionFile), true);
             }
-            $file = preg_replace('@^/@', '', $file);
+            if (!isset($versions[$file])) {
+                return $file;
+            }
             return preg_replace('@\.(css|js)$@', ".{$versions[$file]}.\\1", "/$file");
         }));
     }
