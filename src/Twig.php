@@ -31,9 +31,12 @@ abstract class Twig
                 $versions = json_decode(file_get_contents($versionFile), true);
             }
             if (!isset($versions[$file])) {
+                if (error_reporting() & E_NOTICE) {
+                    trigger_error("No bustable file with key `$file` defined; skipping.", E_USER_NOTICE);
+                }
                 return $file;
             }
-            return preg_replace('@\.(css|js)$@', ".{$versions[$file]}.\\1", "/$file");
+            return preg_replace('@\.([a-z]{1,})$@', ".{$versions[$file]}.\\1", "/$file");
         }));
     }
 }
