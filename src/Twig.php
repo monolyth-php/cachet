@@ -4,7 +4,6 @@ namespace Monolyth\Cachet;
 
 use Twig\Environment;
 use Twig\TwigFunction;
-use Monolyth\Envy\Enviroment;
 
 /**
  * Helper class to quickly add the versioning function to your Twig
@@ -13,22 +12,23 @@ use Monolyth\Envy\Enviroment;
 abstract class Twig
 {
     /**
-     * @param string $versions Location of the versions file (relative to current
-     *  working directory).
+     * @param string $versionFile Location of the versions file (full path).
      * @param Twig\Environment $twig
      */
-    public static function inject(string $versions, Environment $twig) : void
+    public static function inject(string $versionFile, Environment $twig) : void
     {
-        if (class_exists(Environment::class)) {
-            $env = Environment::instance();
-        }
-        $twig->addFunction(new TwigFunction('cachet', function ($file) use ($env) {
-            if (!isset($env) || !$env->prod) {
+        /**
+         * @param string $file The asset file to cache bust.
+         * @param bool $bust Whether or not to cache-bust. Defaults to true, use
+         *  false e.g. during development.
+         */
+        $twig->addFunction(new TwigFunction('cachet', function (string $file, bool $bust = true) use ($versionFile) : string {
+            if (!$bust) {
                 return $file;
             }
             static $versions;
             if (!isset($versions)) {
-                $versions = json_decode(file_get_contents(dirname(__DIR__).'/Versions.json'), true);
+                $versions = json_decode(file_get_contents($versionFile), true);
             }
             $file = preg_replace('@^/@', '', $file);
             return preg_replace('@\.(css|js)$@', ".{$versions[$file]}.\\1", "/$file");
