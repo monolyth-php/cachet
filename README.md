@@ -77,6 +77,8 @@ production. A fake example:
 
 ```
 
+Note, by the way, the leading slash in the `src` attribute.
+
 ## Fault tolerance
 The Twig `cachet` function returns the original filename if no such "bustable"
 file was defined. This is the same behaviour as when the second argument is
