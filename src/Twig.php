@@ -36,7 +36,7 @@ abstract class Twig
                 }
                 return $file;
             }
-            return preg_replace('@\.([a-z]{1,})$@', ".{$versions[$file]}.\\1", "/$file");
+            return preg_replace('@\.([a-z]{1,})$@', ".{$versions[$file]}.\\1", $file);
         }));
     }
 }
