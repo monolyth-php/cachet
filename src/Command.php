@@ -17,7 +17,7 @@ class Command extends Cliff\Command
      * extension is allowed. The subdirectory can be specified (e.g. `styles` or
      * `scripts` but defaults to the file extension.
      */
-    public function __invoke(string $versions, string $public, string $extension, string $subdir = null)
+    public function __invoke(string $versions, string $public, string $extension, string $subdir = null) : void
     {
         $subdir = $subdir ?? $extension;
         $versions = json_decode(file_get_contents(getcwd()."/$versions"), true);
@@ -31,7 +31,7 @@ class Command extends Cliff\Command
             $new = preg_replace("@$subdir/(.*?)\.(css|js)$@", "\\1.$hash.\\2", $file);
             if (!file_exists(getcwd()."/$public/$subdir/$new")) {
                 $glob = preg_replace("@\.($extension)$@", '.*.\\1', $file);
-                exec("rm ".getcwd()."/$public/$subdir/$glob");
+                exec("unlink ".getcwd()."/$public/$subdir/$glob");
                 $old = preg_replace("@^$subdir/@", '', $file);
                 $olddir = getcwd();
                 chdir(getcwd()."/$public/$subdir");
