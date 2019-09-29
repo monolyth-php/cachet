@@ -16,7 +16,7 @@ class Command extends Cliff\Command
      */
     public function __invoke(string $file) : void
     {
-        $hash = md5(file_get_contents(getcwd()."/$file"));
+        $hash = sha1(file_get_contents(getcwd()."/$file"));
         echo "\n\nHash: ".substr($hash, 0, 8)."\n\n";
     }
 }
