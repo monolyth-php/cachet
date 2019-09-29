@@ -11,7 +11,7 @@ use Monolyth\Cliff;
 class Command extends Cliff\Command
 {
     /**
-     * The name of the versions file is _allways_ considered relative to the
+     * The name of the versions file is _always_ considered relative to the
      * current working directory. The same goes for the public directory.
      * The file extension is typically `js` or `css`, but in theory any
      * extension is allowed. The subdirectory can be specified (e.g. `styles` or
@@ -29,15 +29,16 @@ class Command extends Cliff\Command
             }
 
             $new = preg_replace("@$subdir/(.*?)\.(css|js)$@", "\\1.$hash.\\2", $file);
-            if (!file_exists(getcwd()."/$public/$subdir/$new")) {
-                $glob = preg_replace("@\.($extension)$@", '.*.\\1', $file);
-                exec("unlink ".getcwd()."/$public/$subdir/$glob");
-                $old = preg_replace("@^$subdir/@", '', $file);
-                $olddir = getcwd();
-                chdir(getcwd()."/$public/$subdir");
-                symlink($old, $new);
-                chdir($olddir);
+            $glob = preg_replace("@\.($extension)$@", '.*.\\1', $file);
+            $files = glob(getcwd()."/$public/$glob");
+            foreach ($files as $existingFile) {
+                unlink($existingFile);
             }
+            $old = preg_replace("@^$subdir/@", '', $file);
+            $olddir = getcwd();
+            chdir(getcwd()."/$public/$subdir");
+            symlink($old, $new);
+            chdir($olddir);
         }
     }
 }
