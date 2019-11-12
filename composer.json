@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "monolyth/cliff": "^0.3.0"
+        "monolyth/cliff": "^0.4.0"
     },
     "autoload": {
         "psr-4": {
