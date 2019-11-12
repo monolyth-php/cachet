@@ -10,7 +10,7 @@ return function () : Generator {
     /** By default, we can cache-bust assets where extension equals subdirectory */
     yield function () use ($twig) {
         $html = $twig->render('test.html.twig');
-        assert(trim($html) === '/js/test.d02bc52d.js');
+        assert(trim($html) === 'js/test.d02bc52d.js');
     };
 
 };
